@@ -1,0 +1,37 @@
+export PS1="\[\e[1;34m\]\u@\H\[\e[0m\] | \[\e[1;34m\]\@\[\e[0m\]\n[\w]$ "
+
+export TERM=xterm-256color
+[ -n "$TMUX" ] && export TERM=screen-256color
+
+export EDITOR=/usr/bin/vim
+
+alias ls='ls --color=auto'
+
+function attach {
+  if [ $# -ne 1 ]; then
+    return 1
+  fi
+
+  tmux attach -t $1
+}
+
+function workspace {
+  local s=$1
+  if [ $# -ne 1 ]; then
+    s=$(basename `pwd`)
+  fi
+
+  tmux has-session -t $s
+  if [ $? -ne 0 ]; then
+    tmux -2 new-session -d -s $s
+    tmux new-window -t $s:0 -k -n Vim
+    tmux send-keys -t $s:0 "vim" C-m
+    tmux new-window -t $s:1 -k -n Bash
+    tmux select-window -t $s:0
+
+    sleep 1
+  fi
+
+  tmux -2 attach -t $s
+}
+
