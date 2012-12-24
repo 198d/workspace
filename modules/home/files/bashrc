@@ -35,3 +35,29 @@ function workspace {
   tmux -2 attach -t $s
 }
 
+function venv {
+  set -e
+
+  if [ $# -eq 1 ]; then
+    cd $1
+  fi
+
+  name=$(basename `pwd`)
+  location='./.env'
+
+  if [ ! -d $location ]; then
+    echo -n 'Installing venv...'
+      pyvenv $location
+      source $location/bin/activate
+    echo 'done.'
+    echo -n 'Installing distribute...'
+      curl -s http://python-distribute.org/distribute_setup.py | python > /dev/null 2>&1
+      rm -rf distribute*.tar.gz
+    echo 'done.'
+    echo -n 'Installing pip...'
+      easy_install pip > /dev/null 2>&1
+    echo 'done.'
+  fi
+
+  source $location/bin/activate
+}
