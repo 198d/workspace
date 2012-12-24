@@ -1,3 +1,5 @@
+call pathogen#infect()
+
 set t_Co=256
 colorscheme oceanblack256
 syntax on
@@ -17,6 +19,8 @@ set wildmode=longest,list
 set wildignore+=*.pyc
 set list
 set listchars=trail:·
+set laststatus=2
+set statusline=%f\ %m\ \|\ %l\,%c\ \/\ %L\ (%p%%)
 
 " Open files in new tabs from netrw
 let g:netrw_browse_split=3
@@ -35,11 +39,9 @@ map <Leader>n :NERDTree<CR>
 command! Rmsp %s/\s\+$//
 map <Leader>rm :Rmsp<CR>
 
-
 " Fuck some swap and backup files
 set noswapfile
 set nobackup
 
 filetype on
-filetype plugin on
-
+filetype plugin indent on

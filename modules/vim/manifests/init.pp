@@ -13,6 +13,4 @@ class vim {
     recurse => true,
     source  => 'puppet:///modules/vim/vim'
   }
-
-  include commandt
 }
